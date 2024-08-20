@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "items")
-
+@Data
 public class Item {
 
     @Id
@@ -17,6 +18,9 @@ public class Item {
     private String name;
 
     private String brand;
+
+    @Formula("count(*) over()")
+    private Long totalCount;
 
     public Long getId() {
         return id;
@@ -41,4 +45,10 @@ public class Item {
     public void setBrand(String brand) {
         this.brand = brand;
     }
+
+    public Long getTotalCount() {
+        return totalCount;
+    }
+
+
 }

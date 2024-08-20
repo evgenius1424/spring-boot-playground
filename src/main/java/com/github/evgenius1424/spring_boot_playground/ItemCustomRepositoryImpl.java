@@ -4,6 +4,7 @@ import com.github.evgenius1424.spring_boot_playground.entity.Item;
 import com.github.evgenius1424.spring_boot_playground.entity.Item_;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.Expression;
 import org.springframework.stereotype.Repository;
 
@@ -30,9 +31,14 @@ public class ItemCustomRepositoryImpl implements ItemCustomRepository {
 
         query.multiselect(
                 root.get(Item_.BRAND),
-                jsonArrayAggExpression
+                jsonArrayAggExpression,
+                root.get(Item_.totalCount)
         ).groupBy(root.get(Item_.BRAND));
 
-        return entityManager.createQuery(query).getResultList();
+        TypedQuery<BrandItemsProjection> typedQuery = entityManager.createQuery(query);
+
+        typedQuery.setMaxResults(1);
+        typedQuery.setFirstResult(1 * 1);
+        return typedQuery.getResultList();
     }
 }

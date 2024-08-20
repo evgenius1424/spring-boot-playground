@@ -6,4 +6,5 @@ import lombok.Value;
 public class BrandItemsProjection {
     String brand;
     String itemsJson;
+    Long totalCount;
 }
